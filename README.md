@@ -55,6 +55,12 @@ We plan to add further nesting levels later.
 consistency of input/output.
 
 
+Testing
+-------
+
+Run the `minitest` specs with `ruby nested_accessor_spec.rb`.
+
+
 TODO
 -----
 
