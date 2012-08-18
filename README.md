@@ -85,7 +85,9 @@ Author
 Oskar Boethius Lissheim is an iOS and Ruby on Rails developer,
 currently living in Gothenburg, Sweden.
 
-You can reach me on Twitter at [@avocade](http://twitter.com/avocade)
+You can reach me on App.net at
+[@avocade](http://alpha.app.net/avocade), or
+on [Twitter](http://twitter.com/avocade).
 
 
 License
