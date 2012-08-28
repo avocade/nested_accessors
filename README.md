@@ -1,21 +1,26 @@
 NestedAccessors
 ==============
 
-Lets you easily add serialized, nested hash accessors in ActiveRecord
+This class lets you quickly add serialized, nested hash accessors in ActiveRecord
 model objects, using regular `text` database columns.
 
-    class Foo
+    class Person < ActiveRecord::Base
       include NestedAccessors
 
-      nested_accessor :info, :name
+      nested_accessor :info, [ :name, :phone ]
     end
 
-This would give you an accessor to the `name` property contained
+This would synthesize accessors to the `name` and `phone` properties contained
 in the `info` hash.
 
     foo = Foo.new
     foo.name = "bar"
-    foo.info #=> { "name" => "bar" }
+    foo.phone = "+46-123-45678"
+    foo.info #=> { "name" => "bar", "phone" => "+46-123-45678" }
+
+If we want just a single `name` accessor we can simplify a bit:
+
+    nested_accessor :info, :name
 
 
 Installation
@@ -43,14 +48,16 @@ You can nest accessors one level deep. To add more than one
 nested hash accessor to `address` we specify `street` and `city`
 inside an array.
 
-    nested_accessor :info, :name, address: [ :street, :city ]
+    nested_accessor :info, address: [ :street, :city ]
 
-To just specify one accessor, eg `address[street]`, we can just
-write:
+This gives:
+
+    object.street  # these two are nested inside the "address" hash
+    object.city
+
+To just specify just one accessor, eg `address[street]`, we can simplify:
 
     nested_accessor :info, address: street
-
-We plan to add further nesting levels later.
 
 **Note**: The hash keys are always strings, never symbols. This is for
 consistency of input/output.
