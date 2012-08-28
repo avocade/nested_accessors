@@ -2,7 +2,6 @@
 module NestedAccessors
   def self.included(base)
     base.extend ClassMethods
-    puts "NestedAccessors is included!"
   end
 
   # LATER: Decorate with rdoc:
@@ -122,5 +121,3 @@ def define_first_level_nesting_methods_for_property(root, propname)
     self.send(root).send("store", propname.to_s, val.to_s)
   end
 end
-
-

@@ -24,7 +24,7 @@ Installation
 - Add the gem to your `Gemfile`:
 
         source :rubygems
-        gem 'nested_accessors'
+        gem 'nested_accessors', :git => 'git@github.com:avocade/nested_accessors.git'
 
 - Run `bundle install`
 
@@ -32,7 +32,8 @@ Installation
 Dependencies
 ------------
 
-Requires `ActiveRecord` for the `serialize` class method.
+Requires `ActiveRecord` for the `serialize` class method. _(To be
+reconsidered.)_
 
 
 Nested hash
