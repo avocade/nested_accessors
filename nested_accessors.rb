@@ -69,21 +69,15 @@ module NestedAccessors
 end
 
 # HELPER METHODS
-def define_second_level_nesting_methods(subroot, subsubroot, propnames)
-  self.send :define_method, subsubroot do
-    self.send(subroot).send("store", subsubroot.to_s, {}) unless (self.send(subroot).has_key?(subsubroot.to_s) and self.send(subroot).send("fetch", subsubroot.to_s).send("is_a?", Hash))
-    self.send(subroot).send("fetch", subsubroot.to_s)
+def define_first_level_nesting_methods_for_property(root, propname)
+  self.send :define_method, "#{propname}=" do |val|
+    # self.send "init_nested_accessor_#{root}"  # on root object name
+    self.send(root).send("store", propname.to_s, val.to_s)
   end
-
-  if propnames
-    propnames.each do |a_propname|
-      self.send :define_method, "#{a_propname}=" do |val|
-        self.send(subsubroot).send("store", a_propname.to_s, val.to_s)
-      end
-      self.send :define_method, a_propname do
-        self.send(subsubroot).send("fetch", a_propname.to_s)
-      end
-    end
+  self.send :define_method, propname do
+    # 4. and return the correct value specified in the declaration, eg Integer
+    # self.send "init_nested_accessor_#{root}"  # on root object name
+    self.send(root).send("fetch", propname.to_s)
   end
 end
 
@@ -99,25 +93,29 @@ def define_first_level_nesting_methods_for_subroot(root, subroot, subroot_type, 
 
   if propnames
     propnames.each do |a_propname|
-      self.send :define_method, "#{a_propname}=" do |val|
+      self.send :define_method, "#{subroot}_#{a_propname}=" do |val|
         self.send(subroot).send("store", a_propname.to_s, val.to_s)
       end
-      self.send :define_method, a_propname do
+      self.send :define_method, "#{subroot}_#{a_propname}" do
         self.send(subroot).send("fetch", a_propname.to_s)
       end
     end
   end
 end
 
-def define_first_level_nesting_methods_for_property(root, propname)
-  self.send :define_method, propname do
-    # 4. and return the correct value specified in the declaration, eg Integer
-    # self.send "init_nested_accessor_#{root}"  # on root object name
-    self.send(root).send("fetch", propname.to_s)
+def define_second_level_nesting_methods(subroot, subsubroot, propnames)
+  self.send :define_method, "#{subroot}_#{subsubroot}" do
+    self.send(subroot).send("store", subsubroot.to_s, {}) unless (self.send(subroot).has_key?(subsubroot.to_s) and self.send(subroot).send("fetch", subsubroot.to_s).send("is_a?", Hash))
+    self.send(subroot).send("fetch", subsubroot.to_s)
   end
-
-  self.send :define_method, "#{propname}=" do |val|
-    # self.send "init_nested_accessor_#{root}"  # on root object name
-    self.send(root).send("store", propname.to_s, val.to_s)
+  if propnames
+    propnames.each do |a_propname|
+      self.send :define_method, "#{subroot}_#{subsubroot}_#{a_propname}=" do |val|
+        self.send("#{subroot}_#{subsubroot}").send("store", a_propname.to_s, val.to_s)
+      end
+      self.send :define_method, "#{subroot}_#{subsubroot}_#{a_propname}" do
+        self.send("#{subroot}_#{subsubroot}").send("fetch", a_propname.to_s)
+      end
+    end
   end
 end

@@ -86,29 +86,29 @@ describe NestedAccessors do
       end
 
       it 'should init with just one param in array' do
-        Person.class_eval %q{ nested_accessor :info, snub: [:snub_id] }
+        Person.class_eval %q{ nested_accessor :info, snub: [:identifier] }
         person = Person.new
         person.snub.must_be_kind_of Hash
-        person.snub_id = "Achaplan"
-        person.snub_id.must_equal "Achaplan"
+        person.snub_identifier = "Achaplan"
+        person.snub_identifier.must_equal "Achaplan"
       end
 
       it 'should init with just one param symbol in hash as well' do
         Person.class_eval %q{ nested_accessor :info, auth: :facebook }
         person = Person.new
         person.auth.must_be_kind_of Hash
-        person.facebook = "Achaplan"
-        person.facebook.must_equal "Achaplan"
+        person.auth_facebook = "12k3j"
+        person.auth_facebook.must_equal "12k3j"
       end
 
       it 'should create shallow accessor methods for each hash propname' do
-        Person.class_eval %q{ nested_accessor :bank, branch: [:branch_id, :account_number] }
+        Person.class_eval %q{ nested_accessor :bank, branch: [:designator, :account_number] }
         person = Person.new
         person.branch.must_be_kind_of Hash
-        person.branch_id = "123"
-        person.branch_id.must_equal "123"
-        person.account_number = "999"
-        person.account_number.must_equal "999"
+        person.branch_designator = "123"
+        person.branch_designator.must_equal "123"
+        person.branch_account_number = "999"
+        person.branch_account_number.must_equal "999"
       end
 
       # it 'should perhaps create accessor methods on the subroot object, for each subparam in hash' do
@@ -140,15 +140,15 @@ describe NestedAccessors do
         # nested_accessor :info, subregion: { address: [:street, :city] }
         #=> foo.info[address][subregion] = {}
         # Person.class_eval %q{ nested_accessor :home, subregion: { address: [:street, :city] } }
-        Person.class_eval %q{ nested_accessor :home, budget: { heating: [:high, :low] } }
+        Person.class_eval %q{ nested_accessor :home, budget: { heating: [:highest, :lowest] } }
         person = Person.new
-        person.heating.must_be_kind_of Hash
+        person.budget_heating.must_be_kind_of Hash
         person.budget.must_be_kind_of Hash
         person.budget.has_key?("heating").must_equal true  # can only test that hash has the key after we've used the subregion command since that instantiates the nested hash
-        person.high = "32 C"
-        person.high.must_equal "32 C"
-        person.low = "10 C"
-        person.low.must_equal "10 C"
+        person.budget_heating_highest = "32 C"
+        person.budget_heating_highest.must_equal "32 C"
+        person.budget_heating_lowest = "10 C"
+        person.budget_heating_lowest.must_equal "10 C"
       end
 
       it 'should set deep hash values and not overwrite others in the same subhash' do

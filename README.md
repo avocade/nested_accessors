@@ -52,8 +52,8 @@ inside an array.
 
 This gives:
 
-    object.street  # these two are nested inside the "address" hash
-    object.city
+    object.address_street  # these two are nested inside the "address" hash
+    object.address_city
 
 To just specify just one accessor, eg `address[street]`, we can simplify:
 
@@ -66,19 +66,20 @@ consistency of input/output.
 Testing
 -------
 
-Run the `minitest` specs with `ruby nested_accessor_spec.rb`.
+Run the `minitest` specs using: 
+
+    ruby nested_accessor_spec.rb
 
 
 TODO
 -----
 
 - Extract as a ruby gem for rails `active_record` models
+- Create object wrappers for each nested hash, so can get accessors like `person.address.street` for `person[address][street]`
 - Add two-level nesting, eg `foo[bar][name][surname]`
-- Array type with String objects in the array
-- Array with nested Hash objects in it, eg `foo[bar][1][name]`
-- Perhaps switch to always use symbolic keys for convention instead of
-stringified keys, since symbolic keys can use new ruby 1.9 hash
-accessor literal:
+- Array with nested Hash objects inside, eg `foo[bar][1][name]`
+- Perhaps switch convention to always use symbolic keys instead of
+stringified keys, so can use new ruby 1.9 hash syntax:
 
         foo.info = { name: "Anders" }
         foo.info[:name]
@@ -90,12 +91,11 @@ accessor literal:
 Author
 ------
 
-Oskar Boethius Lissheim is an iOS and Ruby on Rails developer,
-currently living in Gothenburg, Sweden.
+Oskar Boethius Lissheim is a Product Designer and iOS &amp; Ruby on Rails developer. He currently lives in Gothenburg, Sweden.
 
-You can reach me on App.net at
+You can reach him on App.net at
 [@avocade](http://alpha.app.net/avocade), or
-on [Twitter](http://twitter.com/avocade).
+[Twitter](http://twitter.com/avocade).
 
 
 License
