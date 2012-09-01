@@ -87,6 +87,9 @@ TODO
 -----
 
 - Extract as a ruby gem for rails `active_record` models
+- Switch to using `supermodel` gem for testing `active_model` serialize
+  dependency properly instead of stubbing it out
+- Allow setting default value for each accessor, eg `last_name: "Doe"`
 - Create object wrappers for each nested hash, so can get accessors like `person.address.street` for `person[address][street]`
 - Add two-level nesting, eg `foo[bar][name][surname]`
 - Array with nested Hash objects inside, eg `foo[bar][1][name]`

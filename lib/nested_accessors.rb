@@ -1,4 +1,5 @@
 require_relative "nested_accessors/version"
+require_relative "nested_accessors/railtie" if defined? Rails
 
 module NestedAccessors
   def self.included(base)
@@ -18,7 +19,7 @@ module NestedAccessors
   # LATER: add nesting with arrays as well
   # nested_accessor :cellar,
   #   name: "My Cellar",  # specifies default value (set in "init hash" method)
-  #   pincode: nil,  # nil default value
+  #   pin_code: "1234",  # "1234" default value
   #   location: { lat: nil, lon: nil },  # specifies a nested Hash with nil as default values
   #   # specify an array type, can only take one param (since we can only have one type of object in the array)
   #   # OBS: all this breaks old syntax just taking an array of symbols to specify hash key accessors
@@ -72,12 +73,9 @@ end
 # HELPER METHODS
 def define_first_level_nesting_methods_for_property(root, propname)
   self.send :define_method, "#{propname}=" do |val|
-    # self.send "init_nested_accessor_#{root}"  # on root object name
     self.send(root).send("store", propname.to_s, val.to_s)
   end
   self.send :define_method, propname do
-    # 4. and return the correct value specified in the declaration, eg Integer
-    # self.send "init_nested_accessor_#{root}"  # on root object name
     self.send(root).send("fetch", propname.to_s)
   end
 end
@@ -91,7 +89,6 @@ def define_first_level_nesting_methods_for_subroot(root, subroot, subroot_type, 
     self.send(root).send("store", subroot.to_s, subroot_value) unless (self.send(root).has_key?(subroot.to_s) and self.send(root).send("fetch", subroot.to_s).send("is_a?", subroot_value.class))
     self.send(root).send("fetch", subroot.to_s)
   end
-
   if propnames
     propnames.each do |a_propname|
       self.send :define_method, "#{subroot}_#{a_propname}=" do |val|
@@ -120,3 +117,4 @@ def define_second_level_nesting_methods(subroot, subsubroot, propnames)
     end
   end
 end
+
