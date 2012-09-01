@@ -4,23 +4,29 @@ NestedAccessors
 This class lets you quickly add serialized, nested hash accessors in ActiveRecord
 model objects, using regular `text` database columns.
 
-    class Person < ActiveRecord::Base
-      include NestedAccessors
+```ruby
+class Person < ActiveRecord::Base
+  include NestedAccessors
 
-      nested_accessor :info, [ :name, :phone ]
-    end
+  nested_accessor :info, [ :name, :phone ]
+end
+```
 
 This would synthesize accessors to the `name` and `phone` properties contained
 in the `info` hash.
 
-    foo = Foo.new
-    foo.name = "bar"
-    foo.phone = "+46-123-45678"
-    foo.info #=> { "name" => "bar", "phone" => "+46-123-45678" }
+```ruby
+foo = Foo.new
+foo.name = "bar"
+foo.phone = "+46-123-45678"
+foo.info #=> { "name" => "bar", "phone" => "+46-123-45678" }
+```
 
-If we want just a single `name` accessor we can simplify a bit:
+If we want just a single `name` accessor we can remove the array:
 
-    nested_accessor :info, :name
+```ruby
+nested_accessor :info, :name
+```
 
 
 Installation
@@ -48,16 +54,22 @@ You can nest accessors one level deep. To add more than one
 nested hash accessor to `address` we specify `street` and `city`
 inside an array.
 
-    nested_accessor :info, address: [ :street, :city ]
+```ruby
+nested_accessor :info, address: [ :street, :city ]
+```
 
 This gives:
 
-    object.address_street  # these two are nested inside the "address" hash
-    object.address_city
+```ruby
+object.address_street  # these two are nested inside the "address" hash
+object.address_city
+```
 
 To just specify just one accessor, eg `address[street]`, we can simplify:
 
-    nested_accessor :info, address: street
+```ruby
+nested_accessor :info, address: street
+```
 
 **Note**: The hash keys are always strings, never symbols. This is for
 consistency of input/output.
@@ -66,7 +78,7 @@ consistency of input/output.
 Testing
 -------
 
-Run the `minitest` specs using: 
+Run the `minitest` specs using:
 
     ruby nested_accessor_spec.rb
 
