@@ -1,4 +1,5 @@
-# IMPLEMENTATION
+require_relative "nested_accessors/version"
+
 module NestedAccessors
   def self.included(base)
     base.extend ClassMethods

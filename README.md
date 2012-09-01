@@ -80,7 +80,7 @@ Testing
 
 Run the `minitest` specs using:
 
-    ruby nested_accessor_spec.rb
+    rake
 
 
 TODO

@@ -3,7 +3,7 @@ require 'minitest/spec'
 require 'simple_mock'
 require 'minitest-colorize'
 
-require './nested_accessors'
+require_relative '../lib/nested_accessors'
 
 # STUBBING OUT active_record "serialized" class method
 class Person  #< ActiveRecord::Base  # must inherit from activerecord to get "serialize" class method
