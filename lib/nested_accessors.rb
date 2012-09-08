@@ -72,48 +72,64 @@ end
 
 # HELPER METHODS
 def define_first_level_nesting_methods_for_property(root, propname)
-  self.send :define_method, "#{propname}=" do |val|
-    self.send(root).send("store", propname.to_s, val.to_s)
-  end
-  self.send :define_method, propname do
-    self.send(root).send("fetch", propname.to_s)
-  end
+  class_eval <<-RUBY, __FILE__, __LINE__+1
+    def #{propname}=(val)
+      #{root}.store("#{propname}", val.to_s)
+    end
+
+    def #{propname}
+      #{root}.fetch "#{propname}"
+    end
+  RUBY
 end
 
 def define_first_level_nesting_methods_for_subroot(root, subroot, subroot_type, propnames=nil)
-  self.send :define_method, subroot do
-    subroot_value = case subroot_type.to_s
-      when "Array" then []
-      else {}
-    end
-    self.send(root).send("store", subroot.to_s, subroot_value) unless (self.send(root).has_key?(subroot.to_s) and self.send(root).send("fetch", subroot.to_s).send("is_a?", subroot_value.class))
-    self.send(root).send("fetch", subroot.to_s)
+  subroot_value = case subroot_type.to_s
+    when "Array" then []
+    else {}
   end
+
+  class_eval <<-RUBY, __FILE__, __LINE__+1
+    def #{subroot}
+      #{root}.store("#{subroot}", #{subroot_value}) unless (#{root}.has_key?("#{subroot}") and #{root}.fetch("#{subroot}").is_a?(#{subroot_value}.class))
+      #{root}.fetch "#{subroot}"
+    end
+  RUBY
+
   if propnames
     propnames.each do |a_propname|
-      self.send :define_method, "#{subroot}_#{a_propname}=" do |val|
-        self.send(subroot).send("store", a_propname.to_s, val.to_s)
-      end
-      self.send :define_method, "#{subroot}_#{a_propname}" do
-        self.send(subroot).send("fetch", a_propname.to_s)
-      end
+      self.class_eval <<-RUBY, __FILE__, __LINE__+1
+        def #{subroot}_#{a_propname}=(val)
+          #{subroot}.store("#{a_propname}".to_s, val.to_s)
+        end
+
+        def #{subroot}_#{a_propname}
+          #{subroot}.fetch "#{a_propname}".to_s
+        end
+      RUBY
     end
   end
 end
 
 def define_second_level_nesting_methods(subroot, subsubroot, propnames)
-  self.send :define_method, "#{subroot}_#{subsubroot}" do
-    self.send(subroot).send("store", subsubroot.to_s, {}) unless (self.send(subroot).has_key?(subsubroot.to_s) and self.send(subroot).send("fetch", subsubroot.to_s).send("is_a?", Hash))
-    self.send(subroot).send("fetch", subsubroot.to_s)
-  end
+  self.class_eval <<-RUBY, __FILE__, __LINE__+1
+    def #{subroot}_#{subsubroot}
+      #{subroot}.store("#{subsubroot}", {}) unless (#{subroot}.has_key?("#{subsubroot}") and #{subroot}.fetch("#{subsubroot}").is_a?(Hash))
+      #{subroot}.fetch "#{subsubroot}"
+    end
+  RUBY
+
   if propnames
     propnames.each do |a_propname|
-      self.send :define_method, "#{subroot}_#{subsubroot}_#{a_propname}=" do |val|
-        self.send("#{subroot}_#{subsubroot}").send("store", a_propname.to_s, val.to_s)
-      end
-      self.send :define_method, "#{subroot}_#{subsubroot}_#{a_propname}" do
-        self.send("#{subroot}_#{subsubroot}").send("fetch", a_propname.to_s)
-      end
+      self.class_eval <<-RUBY, __FILE__, __LINE__+1
+        def #{subroot}_#{subsubroot}_#{a_propname}=(val)
+          #{subroot}_#{subsubroot}.store("#{a_propname}", val.to_s)
+        end
+
+        def #{subroot}_#{subsubroot}_#{a_propname}
+          #{subroot}_#{subsubroot}.fetch "#{a_propname}"
+        end
+      RUBY
     end
   end
 end

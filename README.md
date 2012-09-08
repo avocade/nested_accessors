@@ -86,7 +86,7 @@ Run the `minitest` specs using:
 TODO
 -----
 
-- Extract as a ruby gem for rails `active_record` models
+- Add assertion checking for args
 - Switch to using `supermodel` gem for testing `active_model` serialize
   dependency properly instead of stubbing it out
 - Allow setting default value for each accessor, eg `last_name: "Doe"`
