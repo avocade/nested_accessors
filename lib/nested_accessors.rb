@@ -78,6 +78,7 @@ def define_first_level_nesting_methods_for_property(root, propname)
     end
 
     def #{propname}
+      #{root}.store("#{propname}", nil) unless (#{root}.has_key?("#{propname}"))
       #{root}.fetch "#{propname}"
     end
   RUBY
@@ -104,6 +105,7 @@ def define_first_level_nesting_methods_for_subroot(root, subroot, subroot_type, 
         end
 
         def #{subroot}_#{a_propname}
+          #{subroot}.store("#{a_propname}", nil) unless (#{subroot}.has_key?("#{a_propname}"))
           #{subroot}.fetch "#{a_propname}".to_s
         end
       RUBY
@@ -127,6 +129,7 @@ def define_second_level_nesting_methods(subroot, subsubroot, propnames)
         end
 
         def #{subroot}_#{subsubroot}_#{a_propname}
+          #{subroot}_#{subsubroot}.store("#{a_propname}", nil) unless (#{subroot}_#{subsubroot}.has_key?("#{a_propname}"))
           #{subroot}_#{subsubroot}.fetch "#{a_propname}"
         end
       RUBY

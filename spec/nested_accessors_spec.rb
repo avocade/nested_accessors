@@ -45,6 +45,11 @@ describe NestedAccessors do
         person.info.keys.must_include "phone"
       end
 
+      it 'should init key to nil if blank' do
+        person.info.keys.must_be_empty
+        person.phone.must_be_nil  # shouldn't raise exception since it couldn't find the key
+      end
+
       it 'sets up accessors for first level of nesting' do
         person.phone = "123-2345"
         person.phone.must_equal "123-2345"
@@ -83,6 +88,13 @@ describe NestedAccessors do
         person.address.must_be_kind_of Hash
         person.address["city"] = "Goteborg"
         person.address["city"].must_equal "Goteborg"
+      end
+
+      it 'should init subhash to nil value if blank' do
+        Person.class_eval %q{ nested_accessor :info, address: [:street, :city] }
+        person = Person.new
+        person.address.must_be_kind_of Hash
+        person.address_street.must_be_nil  # shouldn't raise exception since it couldn't find the key
       end
 
       it 'should init with just one param in array' do
@@ -149,6 +161,13 @@ describe NestedAccessors do
         person.budget_heating_highest.must_equal "32 C"
         person.budget_heating_lowest = "10 C"
         person.budget_heating_lowest.must_equal "10 C"
+      end
+
+      it 'should init deep hash values to nil value if blank' do
+        Person.class_eval %q{ nested_accessor :place, location: { coordinate: [:lat, :lon] } }
+        person = Person.new
+        person.location_coordinate.must_be_kind_of Hash
+        person.location_coordinate_lat.must_be_nil  # shouldn't raise exception since it couldn't find the key
       end
 
       it 'should set deep hash values and not overwrite others in the same subhash' do
