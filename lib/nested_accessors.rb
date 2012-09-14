@@ -6,41 +6,15 @@ module NestedAccessors
     base.extend ClassMethods
   end
 
-  # LATER: Decorate with rdoc:
-  #  recommended to be a <tt>t.text :info</tt> in migration, to accommodate growing hashes"
-
-  # LATER: Do test with including this module in new class
-  #  and setting up nested_accessor for :info, address: [:city, :street]
-  # Then setup methods directly for accessing :info_fast serialized hash
-  #  and add straight methods for getting at the [address][city], etc
-  # Then see if nested_accessor is much slower due to using lots of "send" or
-  #  if it's not critical
-
-  # LATER: add nesting with arrays as well
-  # nested_accessor :cellar,
-  #   name: "My Cellar",  # specifies default value (set in "init hash" method)
-  #   pin_code: "1234",  # "1234" default value
-  #   location: { lat: nil, lon: nil },  # specifies a nested Hash with nil as default values
-  #   # specify an array type, can only take one param (since we can only have one type of object in the array)
-  #   # OBS: all this breaks old syntax just taking an array of symbols to specify hash key accessors
-  #   wines: [
-  #     {
-  #       :year => Integer,
-  #       :country => String,
-  #       :price => Float
-  #     }
-  #   ]
-
   module ClassMethods
+    ##
     # Creates new method +nested_accessor+ for adding dynamic accessors to nested hashes, using:
     #   <tt>nested_accessor :pz_settings, confirmation_token: String, subsettings: { foo: String, bar: Integer }</tt>
     def nested_accessor(name, *args)
-      # SETUP ROOT HASH
       self.class_eval do
         serialize name, Hash
       end
 
-      # SETUP SUBROOT PROPERTIES OR HASHES
       args.each do |an_arg|
         if an_arg.is_a? Hash
           # nested_accessor :info, address: [:foo]
