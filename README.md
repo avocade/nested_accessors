@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/avocade/nested_accessors.png?branch=master)](https://travis-ci.org/avocade/nested_accessors)
+
 NestedAccessors
 ==============
 
