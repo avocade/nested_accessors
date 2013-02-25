@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/avocade/nested_accessors.png?branch=master)](https://travis-ci.org/avocade/nested_accessors)
+[![Build Status](https://travis-ci.org/avocade/nested_accessors.png?branch=master)](https://travis-ci.org/avocade/nested_accessors) [![Code Climate](https://codeclimate.com/github/avocade/nested_accessors.png)](https://codeclimate.com/github/avocade/nested_accessors)
 
 NestedAccessors
 ==============
