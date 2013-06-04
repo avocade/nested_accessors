@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.name          = "nested_accessors"
   gem.require_paths = ["lib"]
   gem.version       = NestedAccessors::VERSION
+  gem.extra_rdoc_files = ['README.md']
 
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "simple_mock"
