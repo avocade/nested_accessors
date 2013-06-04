@@ -7,7 +7,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://OLBproductions.com"
   gem.description   = %q{Quickly add serialized, nested hash accessors in ActiveRecord model objects}
   gem.summary       = %q{Without having to write your own accessor methods for getting at serialized hash properties}
-  gem.homepage      = ""
+  gem.homepage      = "http://OLBproductions.com"
+  gem.license      = 'MIT'
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
