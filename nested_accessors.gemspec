@@ -20,5 +20,4 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "simple_mock"
-  gem.add_development_dependency "minitest-colorize"
 end

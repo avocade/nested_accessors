@@ -1,7 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/spec'
 require 'simple_mock'
-require 'minitest-colorize'
 
 require_relative '../lib/nested_accessors'
 
